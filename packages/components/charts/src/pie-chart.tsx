@@ -96,8 +96,6 @@ export type PieChartOptions = {
    */
   endAngle?: number
 
-  animationDuration?: number
-
   /**
    * Determines which data is displayed in the tooltip. `'all'` – display all values, `'segment'` – display only hovered segment. `'all'` by default.
    *
@@ -139,31 +137,19 @@ const defaultProps: Partial<PieChartProps> = {
 export const PieChart = forwardRef<PieChartProps, "div">((props, ref) => {
   const [styles, mergedProps] = useMultiComponentStyle("PieChart", props)
   const {
-    // w,
-    // width,
-    // minW,
-    // minWidth,
-    // maxW,
-    // maxWidth,
-    // h,
-    // height,
-    // minH,
-    // minHeight,
-    // maxH,
-    // maxHeight,
     data,
     strokeWidth,
     withTooltip,
     withLabelsLine,
     className,
     pieChartProps,
-    tooltipProps,
     withLabels,
     paddingAngle,
     startAngle,
     endAngle,
     tooltipDataSource = "all",
     labelsPosition = "inside",
+    tooltipProps,
     tooltipAnimationDuration,
     containerProps,
     valueFormatter,
@@ -172,7 +158,7 @@ export const PieChart = forwardRef<PieChartProps, "div">((props, ref) => {
 
   const { getContainerProps } = useChart({ containerProps })
 
-  const { getPieProps, cssVariables } = usePieChart({
+  const { getPieChartProps, getPieProps, cssVariables } = usePieChart({
     data,
     styles,
     strokeWidth,
@@ -196,6 +182,7 @@ export const PieChart = forwardRef<PieChartProps, "div">((props, ref) => {
   const { getTooltipProps } = useChartTooltip({
     tooltipProps,
     tooltipAnimationDuration,
+    valueFormatter,
   })
 
   const cellEl = useMemo(
@@ -204,10 +191,10 @@ export const PieChart = forwardRef<PieChartProps, "div">((props, ref) => {
         <Cell
           key={`cell-${index}`}
           strokeWidth={strokeWidth}
-          {...getCellProps({ item, index }, ref)}
+          {...getCellProps({ item, index, className: "ui-pie-chart__cell" })}
         />
       )),
-    [data, getCellProps, ref, strokeWidth],
+    [data, getCellProps, strokeWidth],
   )
 
   return (
@@ -222,7 +209,9 @@ export const PieChart = forwardRef<PieChartProps, "div">((props, ref) => {
         <ResponsiveContainer
           {...getContainerProps({ className: "ui-pie-chart__container" })}
         >
-          <ReChartsPieChart {...pieChartProps}>
+          <ReChartsPieChart
+            {...getPieChartProps({ className: "ui-pie-chart__chart" })}
+          >
             <Pie {...getPieProps({ className: "ui-pie-chart__pie" })}>
               {cellEl}
             </Pie>

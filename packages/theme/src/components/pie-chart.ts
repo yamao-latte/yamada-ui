@@ -3,33 +3,50 @@ import type { ComponentMultiStyle } from "@yamada-ui/core"
 export const PieChart: ComponentMultiStyle = {
   baseStyle: {
     container: {},
+    chart: {},
     cell: {},
     tooltip: {
-      border: "solid",
-      borderWidth: 0.2,
-      borderColor: ["blackAlpha.400", "whiteAlpha.400"],
-      bgColor: ["white", "neutral.900"],
-      rounded: 3,
-      paddingX: 5,
-      paddingY: 3,
+      display: "flex",
+      flexDirection: "column",
+      minW: "48",
+      gap: "sm",
+      rounded: "md",
+      bg: ["white", "black"],
+      border: "1px solid",
+      borderColor: ["blackAlpha.200", "whiteAlpha.100"],
+      p: "3",
+      fontWeight: "medium",
+      fontSize: "sm",
+      color: "inherit",
+      boxShadow: ["md", "dark-md"],
+      maxW: "xs",
+      zIndex: "dodoria",
     },
     tooltipTitle: {
-      marginBottom: 2,
       fontSize: "md",
-      fontWeight: 500,
+    },
+    tooltipList: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "xs",
+    },
+    tooltipItem: {
+      display: "flex",
+      alignItems: "center",
+      gap: "sm",
+      fontSize: "sm",
+    },
+    tooltipSwatch: {
+      boxSize: "3",
+      rounded: "full",
     },
     tooltipLabel: {
-      color: ["black", "gray.200"],
-      fontSize: "md",
+      color: ["blackAlpha.800", "whiteAlpha.700"],
     },
     tooltipValue: {
-      fontSize: "md",
+      flex: 1,
+      textAlign: "end",
     },
-  },
-
-  variants: {
-    // subtle: ({ theme: t, colorMode: m, colorScheme: c = "primary" }) => ({}),
-    // solid: ({ theme: t, colorMode: m, colorScheme: c = "primary" }) => ({}),
   },
 
   sizes: {

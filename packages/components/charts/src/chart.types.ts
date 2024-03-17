@@ -461,6 +461,21 @@ export const dotProperties: (keyof Omit<DotProps, "ref">)[] = [
   "onMouseLeave",
 ]
 
+export const pieChartProperties: (keyof PieChartUIProps)[] = [
+  "layout",
+  "syncId",
+  "syncMethod",
+  "width",
+  "height",
+  "data",
+  "margin",
+  "stackOffset",
+  "onClick",
+  "onMouseEnter",
+  "onMouseMove",
+  "onMouseLeave",
+]
+
 export const pieProperties: (keyof Omit<PieProps, "dataKey">)[] = [
   "cx",
   "cy",

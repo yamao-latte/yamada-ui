@@ -3,13 +3,13 @@ import {
   type CSSUIProps,
   ui,
   useTheme,
-  getCSS,
 } from "@yamada-ui/core"
-import { splitObject, type Dict, cx, omitObject } from "@yamada-ui/utils"
+import { type Dict, cx } from "@yamada-ui/utils"
 import { useCallback, useMemo } from "react"
 import type { PieLabel, PieProps } from "recharts"
-import { pieProperties } from "./chart.types"
-import type { RequiredChartPropGetter } from "./chart.types"
+import { getComponentProps } from "./chart-utils"
+import { pieChartProperties, pieProperties } from "./chart.types"
+import type { PieChartUIProps, RequiredChartPropGetter } from "./chart.types"
 import type { PieChartOptions } from "./pie-chart"
 
 export type UsePieChartProps = PieChartOptions & {
@@ -27,8 +27,20 @@ type LabelProps = {
 
 export const usePieChart = (arg: Omit<UsePieChartProps, "dataKey">) => {
   const { theme } = useTheme()
-  const [reChartProps, uiProps] = splitObject(arg, pieProperties as [])
-  const propClassName = getCSS(uiProps as CSSUIObject)(theme)
+
+  const [pieChartProps, pieChartClassName] = arg.pieChartProps
+    ? getComponentProps<Dict, string>(
+        [arg.pieChartProps, pieChartProperties],
+        arg.styles.pieChart,
+      )(theme)
+    : []
+
+  const [pieProps, pieClassName] = arg.pieProps
+    ? getComponentProps<Dict, string>(
+        [arg.pieProps, pieProperties],
+        arg.styles.pie,
+      )(theme)
+    : []
 
   const insideLabelEl: PieLabel = useCallback(
     ({ cx, cy, midAngle, innerRadius, outerRadius, value }: LabelProps) => {
@@ -53,6 +65,22 @@ export const usePieChart = (arg: Omit<UsePieChartProps, "dataKey">) => {
     [arg.styles.label],
   )
 
+  const getPieChartProps: RequiredChartPropGetter<
+    "svg",
+    Partial<PieChartUIProps>,
+    Omit<PieChartUIProps, "ref" | "color">
+  > = useCallback(
+    ({ className, ...props } = {}, ref = null) => {
+      return {
+        ref,
+        className: cx(className, pieChartClassName),
+        ...props,
+        ...pieChartProps,
+      }
+    },
+    [pieChartClassName, pieChartProps],
+  )
+
   const getPieProps: RequiredChartPropGetter<
     "svg",
     Partial<PieProps>,
@@ -61,7 +89,7 @@ export const usePieChart = (arg: Omit<UsePieChartProps, "dataKey">) => {
     ({ className, ...props } = {}, ref = null) => {
       return {
         ref,
-        className: cx(className, propClassName),
+        className: cx(className, pieClassName),
         data: arg.data,
         innerRadius: 0,
         outerRadius: "100%",
@@ -81,8 +109,8 @@ export const usePieChart = (arg: Omit<UsePieChartProps, "dataKey">) => {
         paddingAngle: 0,
         startAngle: arg.startAngle,
         endAngle: arg.endAngle,
-        ...omitObject(reChartProps, []),
         ...props,
+        pieProps,
       }
     },
     [
@@ -93,8 +121,8 @@ export const usePieChart = (arg: Omit<UsePieChartProps, "dataKey">) => {
       arg.withLabels,
       arg.withLabelsLine,
       insideLabelEl,
-      propClassName,
-      reChartProps,
+      pieClassName,
+      pieProps,
     ],
   )
 
@@ -108,7 +136,7 @@ export const usePieChart = (arg: Omit<UsePieChartProps, "dataKey">) => {
     return [...cellColors]
   }, [arg.data])
 
-  return { getPieProps, cssVariables }
+  return { getPieChartProps, getPieProps, cssVariables }
 }
 
 export type UsePieChartReturn = ReturnType<typeof usePieChart>
