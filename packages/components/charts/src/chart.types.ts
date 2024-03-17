@@ -10,6 +10,8 @@ import type {
   PieProps as RechartsPieProps,
   LineChart as ReChartsLineChart,
   LineProps as ReChartsLineProps,
+  RadarChart as ReChartsRadarChart,
+  RadarProps as ReChartsRadarProps,
   ReferenceLineProps,
   DotProps,
   XAxisProps,
@@ -20,6 +22,9 @@ import type {
   ResponsiveContainerProps,
   CellProps,
   PieProps,
+  PolarGridProps,
+  PolarAngleAxisProps,
+  PolarRadiusAxisProps,
 } from "recharts"
 
 export type ChartPropGetter<
@@ -54,6 +59,12 @@ export type CurveType =
   | "step"
   | "stepBefore"
   | "stepAfter"
+export type RadarChartSeries = Merge<
+  Merge<CSSUIProps, ReChartsRadarProps>,
+  {
+    fill: CSSUIProps["color"]
+  }
+>
 export type AreaChartSeries = Merge<
   Merge<CSSUIProps, ReChartsAreaProps>,
   {
@@ -123,6 +134,11 @@ export type PieUIProps = Merge<CSSUIProps, Omit<PieProps, "children">>
 export type PieChartProps = Merge<
   Merge<CSSUIProps, RechartsPieProps>,
   { color?: CSSUIProps["color"] }
+>
+
+export type RadarChartUIProps = Merge<
+  CSSUIProps,
+  ComponentPropsWithoutRef<typeof ReChartsRadarChart>
 >
 
 export const areaChartProperties: (keyof ComponentPropsWithoutRef<
@@ -513,3 +529,95 @@ export const cellProperties: (keyof Omit<
   CellProps,
   "children" | "string" | "dangerouslySetInnerHTML" | "style"
 >)[] = ["fill", "stroke", "strokeWidth"]
+
+export const radarChartProperties: (keyof ComponentPropsWithoutRef<
+  typeof ReChartsRadarChart
+>)[] = [
+  "width",
+  "height",
+  "data",
+  "cx",
+  "cy",
+  "startAngle",
+  "endAngle",
+  "innerRadius",
+  "outerRadius",
+  "margin",
+  "onMouseEnter",
+  "onMouseLeave",
+  "onClick",
+]
+
+export const radarproperties: (keyof Omit<ReChartsRadarProps, "ref">)[] = [
+  "dataKey",
+  "points",
+  "shape",
+  "dot",
+  "legendType",
+  "label",
+  "isAnimationActive",
+  "animationBegin",
+  "animationDuration",
+  "animationEasing",
+  "onAnimationStart",
+  "onAnimationEnd",
+]
+
+export const polarGridProperties: (keyof PolarGridProps)[] = [
+  "cx",
+  "cy",
+  "innerRadius",
+  "outerRadius",
+  "polarAngles",
+  "polarRadius",
+  "polarRadius",
+  "gridType",
+]
+
+export const polarAngleAxisProperties: (keyof PolarAngleAxisProps)[] = [
+  "dataKey",
+  "cx",
+  "cy",
+  "radius",
+  "axisLine",
+  "axisLineType",
+  "tickLine",
+  "tick",
+  "orient",
+  "tickFormatter",
+  "type",
+  "allowDuplicatedCategory",
+  "onClick",
+  "onMouseDown",
+  "onMouseUp",
+  "onMouseMove",
+  "onMouseOver",
+  "onMouseOut",
+  "onMouseEnter",
+  "onMouseLeave",
+]
+
+export const polarradiusAxisProperties: (keyof PolarRadiusAxisProps)[] = [
+  "angle",
+  "type",
+  "allowDuplicatedCategory",
+  "cx",
+  "cy",
+  "domain",
+  "reversed",
+  "label",
+  "orientation",
+  "axisLine",
+  "tick",
+  "tickFormatter",
+  "tickCount",
+  "scale",
+  "onClick",
+  "onMouseDown",
+  "onMouseUp",
+  "onMouseMove",
+  "onMouseOver",
+  "onMouseOut",
+  "onMouseEnter",
+  "onMouseLeave",
+]
