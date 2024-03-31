@@ -1,5 +1,11 @@
 # @yamada-ui/modal
 
+## 1.1.2
+
+### Patch Changes
+
+- [#1109](https://github.com/yamada-ui/yamada-ui/pull/1109) [`8cf83a8`](https://github.com/yamada-ui/yamada-ui/commit/8cf83a81309f0065bad3d4d693840d34f5f62dbb) Thanks [@GensIto](https://github.com/GensIto)! - fixed zIndex & outside default value for modal
+
 ## 1.1.1
 
 ### Patch Changes
